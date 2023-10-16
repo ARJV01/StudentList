@@ -1,3 +1,7 @@
+//Arjun Vinsel
+//10/16/2023
+//This program will read in details about a student into a struct. This program can also print out all of theese students, and can also delete students 
+
 #include<iostream>
 #include<cstring>
 #include<vector>
@@ -13,31 +17,29 @@ struct Student {
   float gpa;
 };
 
-void add(vector<Student> &studentList);
-void print(vector<Student> &studentList);
-void deleteStudent(vector<Student> &studentList);
+void add(vector<Student*> &studentList);//Funtion prototype for add
+void print(vector<Student*> &studentList); // Funtion prototype for print
+void deleteStudent(vector<Student*> &studentList);// Funtion prototype for deleteStudent
 
 
 
 int main () {
-  int studentCount = 0;
   bool stillActive = true;
-  vector<Student> studentList;
+  vector<Student*> studentList;
   while(stillActive == true) {
     cout << "Please enter add print delete or quit: " << endl;
     char input[20];
     cin >> input;
-  if (strcmp(input, "add") == 0) {
+    if (strcmp(input, "add") == 0) {//When a user enters add this condition will call the add method  
     add(studentList);
-    studentCount++;
   }
-  if (strcmp(input, "print") == 0) {
+    if (strcmp(input, "print") == 0) {// When a user enters print the condition will call the print funtion
     print(studentList);
   }
-  if (strcmp(input, "delete") == 0) {
+    if (strcmp(input, "delete") == 0) {// When a user enters delete the condition will call the delete funtion
     deleteStudent(studentList);
   }
-  if (strcmp(input, "quit") == 0) {
+    if (strcmp(input, "quit") == 0) {// When a user enters quit the loop will set still active to false and quit the program
     stillActive = false;
   }
   }
@@ -45,7 +47,7 @@ int main () {
   return 0;
 }
 
-void add(vector<Student> &studentList) {
+void add(vector<Student*> &studentList) {// This method will have a user enter in the fist name, last name, ID, and Gpa of a student, then it will add the student to the vector 
   Student *stu = new Student;
   cout << "Enter a first name: " << endl;
   cin >> stu -> firstName;
@@ -55,25 +57,27 @@ void add(vector<Student> &studentList) {
   cin >> stu -> idNum;
   cout << "Enter a GPA: " << endl;
   cin >> stu -> gpa;
-  studentList.push_back(*stu);
+  studentList.push_back(stu);
 }
 
-void print(vector<Student> &studentList) {
-  vector<Student>:: iterator itr;
+void print(vector<Student*> &studentList) {// This method will print all the students in the vector
+  vector<Student*>:: iterator itr;
   for(itr = studentList.begin(); itr < studentList.end(); itr++) {
-    cout << "First Name: " << (*itr).firstName << " Last Name: " << (*itr).lastName << " ID Number : " << (*itr).idNum << " GPA: " << setprecision(3) << (*itr).gpa << endl;
+    cout << "First Name: " << (*itr) -> firstName << " Last Name: " << (*itr) -> lastName << " ID Number : " << (*itr) -> idNum << " GPA: " << fixed << setprecision(2) << (*itr) -> gpa << endl;
   }
 }
 
-void deleteStudent (vector<Student> &studentList) {
-  char input[20];
-  cout << "please enter the first name of the student you wish to delete: " << endl;
+void deleteStudent (vector<Student*> &studentList) {// This method will have a user enter a name and delete student
+  int input = 0;
+  cout << "please enter the id number of the student you wish to delete: " << endl;
   cin >> input;
-  vector<Student>:: iterator itr;
+  vector<Student*>:: iterator itr;
   for(itr = studentList.begin(); itr < studentList.end(); itr++) {
-    if(strcmp(input, (*itr).firstName) == 0) {
-      delete -> itr;
-      }
+    if(input == (*itr) -> idNum) {
+      delete *itr;
+      studentList.erase(itr);
+    break;
+    }
   }
 
 }
